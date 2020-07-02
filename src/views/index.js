@@ -9,3 +9,4 @@ export { default as Typography } from './Typography';
 export { default as UserList } from './UserList';
 export { default as Bal } from './Bal';
 export { default as Book } from './Book';
+export { default as Podcast } from './Podcast';
