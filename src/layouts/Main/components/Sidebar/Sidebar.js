@@ -6,6 +6,8 @@ import { Divider, Drawer } from '@material-ui/core';
 import DashboardIcon from '@material-ui/icons/Dashboard';
 import PeopleIcon from '@material-ui/icons/People';
 import BookIcon from '@material-ui/icons/Book';
+import ArticleIcon from '@material-ui/icons/ChromeReaderMode';
+import CourseIcon from '@material-ui/icons/School';
 import ShoppingBasketIcon from '@material-ui/icons/ShoppingBasket';
 import TextFieldsIcon from '@material-ui/icons/TextFields';
 import ImageIcon from '@material-ui/icons/Image';
@@ -88,6 +90,16 @@ const Sidebar = props => {
       title: 'Books',
       href: '/books',
       icon: <BookIcon />
+    },
+    {
+      title: 'Articles',
+      href: '/articles',
+      icon: <ArticleIcon />
+    },
+    {
+      title: 'Courses',
+      href: '/courses',
+      icon: <CourseIcon />
     }
   ];
 

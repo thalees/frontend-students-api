@@ -15,6 +15,8 @@ import {
   SignIn as SignInView,
   Bal as BalView,
   Book as BookView,
+  Article as ArticleView,
+  Course as CourseView,
   NotFound as NotFoundView
 } from './views';
 
@@ -87,6 +89,18 @@ const Routes = () => {
         exact
         layout={MainLayout}
         path="/books"
+      />
+      <RouteWithLayout
+        component={ArticleView}
+        exact
+        layout={MainLayout}
+        path="/articles"
+      />
+       <RouteWithLayout
+        component={CourseView}
+        exact
+        layout={MainLayout}
+        path="/courses"
       />
       <Redirect to="/not-found" />
     </Switch>
