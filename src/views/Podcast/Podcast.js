@@ -3,6 +3,7 @@ import { withRouter } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import { Grid } from '@material-ui/core';
 import { PodcastDetails } from './components';
+import { PodcastList } from "../Podcast/components";
 import { makeStyles } from '@material-ui/styles';
 
 const useStyles = makeStyles(theme => ({
@@ -19,6 +20,9 @@ const Podcast = props => {
       <Grid container spacing={4}>
         <Grid item lg={12} md={6} xl={8} xs={12}>
           <PodcastDetails />
+        </Grid>
+        <Grid item lg={12} md={6} xl={8} xs={12}>
+          <PodcastList />
         </Grid>
       </Grid>
     </div>
