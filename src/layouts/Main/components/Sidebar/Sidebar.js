@@ -12,6 +12,7 @@ import ImageIcon from '@material-ui/icons/Image';
 import AccountBoxIcon from '@material-ui/icons/AccountBox';
 import SettingsIcon from '@material-ui/icons/Settings';
 import LockOpenIcon from '@material-ui/icons/LockOpen';
+import PodcastIcon from '@material-ui/icons/Headset';
 
 import { Profile, SidebarNav, UpgradePlan } from './components';
 
@@ -88,6 +89,11 @@ const Sidebar = props => {
       title: 'Books',
       href: '/books',
       icon: <BookIcon />
+    },
+    {
+      title: 'Podcast',
+      href: '/Podcasts',
+      icon: <PodcastIcon />
     }
   ];
 
