@@ -1,13 +1,6 @@
-export { default as Account } from './Account';
 export { default as Dashboard } from './Dashboard';
 export { default as NotFound } from './NotFound';
-export { default as ProductList } from './ProductList';
-export { default as Settings } from './Settings';
-export { default as SignIn } from './SignIn';
-export { default as SignUp } from './SignUp';
-export { default as Typography } from './Typography';
-export { default as UserList } from './UserList';
-export { default as Bal } from './Bal';
+export { default as Student } from './Student';
 export { default as Book } from './Book';
 export { default as Article } from './Article';
 export { default as Course } from './Course';

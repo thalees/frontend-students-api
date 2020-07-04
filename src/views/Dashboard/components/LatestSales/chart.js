@@ -30,8 +30,7 @@ export const options = {
     borderColor: palette.divider,
     backgroundColor: palette.white,
     titleFontColor: palette.text.primary,
-    bodyFontColor: palette.text.secondary,
-    footerFontColor: palette.text.secondary
+    bodyFontColor: palette.text.secondary
   },
   layout: { padding: 0 },
   scales: {
