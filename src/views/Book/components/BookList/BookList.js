@@ -1,7 +1,6 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import clsx from 'clsx';
 import PerfectScrollbar from 'react-perfect-scrollbar';
-import PropTypes from 'prop-types';
 import { makeStyles, withStyles } from '@material-ui/styles';
 import { red } from '@material-ui/core/colors';
 
@@ -51,24 +50,30 @@ const ColorButton = withStyles(theme => ({
   }
 }))(Button);
 
-const BookList = props => {
-  const [books, setBooks] = useState([{}]);
+const BookList = ({ className, setData, setUpdateButton }) => {
+  const [books, setBooks] = useState([]);
 
-  // useEffect(() => {
-  //   function handleStatusChange(data) {
-  //     setBooks(data);
-  //   }
+  const service = new BookService();
 
-  //   const service = new BookService();
-  //   service.get('f58160c6-4e88-460d-8448-bfba8aa6f4b0', handleStatusChange);
-  // }, [setBooks]);
+  const getBookList = async () => {
+    const response = await service.get();
+    setBooks(response.data);
+  };
 
-  const { className, ...rest } = props;
+  const deleteItem = item => {
+    const items = books;
+    items.splice(item, 1);
+    setBooks(items);
+  };
+
+  useEffect(() => {
+    getBookList();
+  }, []);
 
   const classes = useStyles();
 
   return (
-    <Card {...rest} className={clsx(classes.root, className)}>
+    <Card className={clsx(classes.root, className)}>
       <CardHeader title="Book List" />
       <Divider />
       <CardContent className={classes.content}>
@@ -87,7 +92,21 @@ const BookList = props => {
               </TableHead>
               <TableBody>
                 {books.map((book, index) => (
-                  <TableRow hover key={book.id}>
+                  <TableRow
+                    hover
+                    key={book.id}
+                    id={book.id}
+                    onClick={event => {
+                      const cell = event.currentTarget.childNodes;
+                      setData({
+                        id: event.currentTarget.getAttribute('id'),
+                        title: cell[1].textContent,
+                        subject: cell[2].textContent,
+                        author: cell[3].textContent,
+                        link: cell[4].textContent
+                      });
+                      setUpdateButton(true);
+                    }}>
                     <TableCell>{index}</TableCell>
                     <TableCell>{book.title}</TableCell>
                     <TableCell>{book.subject}</TableCell>
@@ -97,13 +116,14 @@ const BookList = props => {
                       <div>
                         <ColorButton
                           variant="contained"
+                          id={book.id}
                           startIcon={<DeleteIcon />}
                           onClick={event => {
-                            const service = new BookService();
-                            setBooks(
-                              service.get(
-                                'f58160c6-4e88-460d-8448-bfba8aa6f4b0'
-                              )
+                            service.delete(
+                              event.currentTarget.getAttribute('id')
+                            );
+                            deleteItem(
+                              event.currentTarget.childNodes[0].textContent
                             );
                           }}>
                           Delete
@@ -122,8 +142,8 @@ const BookList = props => {
   );
 };
 
-BookList.propTypes = {
-  className: PropTypes.string
-};
+// Não passar o students id chumbado, deveria ser buscado do LOCALSTORAGE.
+
+// Lógica de validação: Digita o usuário, se tiver pega o ID, caso contrário cria.
 
 export default BookList;

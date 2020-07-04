@@ -1,6 +1,5 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import clsx from 'clsx';
-import PropTypes from 'prop-types';
 import {
   Card,
   CardHeader,
@@ -11,26 +10,31 @@ import {
   Button,
   TextField
 } from '@material-ui/core';
+import BookService from '../../../../services/BookService';
 
-const BookDetails = props => {
-  const { className, ...rest } = props;
-
-  const [values, setValues] = useState({
+const BookDetails = ({ className, bookToBeUpdated, updateButton }) => {
+  const [bookValues, setBookValues] = useState({
+    id: '',
     subject: '',
     title: '',
     author: '',
     link: ''
   });
+  const service = new BookService();
+
+  useEffect(() => {
+    setBookValues(bookToBeUpdated);
+  }, [bookToBeUpdated]);
 
   const handleChange = event => {
-    setValues({
-      ...values,
+    setBookValues({
+      ...bookValues,
       [event.target.name]: event.target.value
     });
   };
 
   return (
-    <Card {...rest} className={clsx({}, className)}>
+    <Card className={clsx({}, className)}>
       <form autoComplete="off" noValidate>
         <CardHeader subheader="The information can be edited" title="Profile" />
         <Divider />
@@ -45,7 +49,7 @@ const BookDetails = props => {
                 name="subject"
                 onChange={handleChange}
                 required
-                value={values.subject}
+                value={bookValues.subject}
                 variant="outlined"
               />
             </Grid>
@@ -57,7 +61,7 @@ const BookDetails = props => {
                 name="title"
                 onChange={handleChange}
                 required
-                value={values.title}
+                value={bookValues.title}
                 variant="outlined"
               />
             </Grid>
@@ -69,7 +73,7 @@ const BookDetails = props => {
                 name="author"
                 onChange={handleChange}
                 required
-                value={values.author}
+                value={bookValues.author}
                 variant="outlined"
               />
             </Grid>
@@ -81,7 +85,7 @@ const BookDetails = props => {
                 name="link"
                 required
                 onChange={handleChange}
-                value={values.link}
+                value={bookValues.link}
                 variant="outlined"
               />
             </Grid>
@@ -89,17 +93,25 @@ const BookDetails = props => {
         </CardContent>
         <Divider />
         <CardActions>
-          <Button color="primary" variant="contained">
+          <Button
+            color="primary"
+            variant="contained"
+            disabled={updateButton}
+            onClick={() => service.post(bookValues)}>
             Save book
+          </Button>
+
+          <Button
+            color="primary"
+            variant="contained"
+            disabled={!updateButton}
+            onClick={() => service.put(bookValues)}>
+            Update book
           </Button>
         </CardActions>
       </form>
     </Card>
   );
-};
-
-BookDetails.propTypes = {
-  className: PropTypes.string
 };
 
 export default BookDetails;

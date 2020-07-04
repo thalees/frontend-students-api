@@ -78,8 +78,7 @@ const UsersByDevice = props => {
       borderColor: theme.palette.divider,
       backgroundColor: theme.palette.white,
       titleFontColor: theme.palette.text.primary,
-      bodyFontColor: theme.palette.text.secondary,
-      footerFontColor: theme.palette.text.secondary
+      bodyFontColor: theme.palette.text.secondary
     }
   };
 
@@ -105,10 +104,7 @@ const UsersByDevice = props => {
   ];
 
   return (
-    <Card
-      {...rest}
-      className={clsx(classes.root, className)}
-    >
+    <Card {...rest} className={clsx(classes.root, className)}>
       <CardHeader
         action={
           <IconButton size="small">
@@ -120,23 +116,14 @@ const UsersByDevice = props => {
       <Divider />
       <CardContent>
         <div className={classes.chartContainer}>
-          <Doughnut
-            data={data}
-            options={options}
-          />
+          <Doughnut data={data} options={options} />
         </div>
         <div className={classes.stats}>
           {devices.map(device => (
-            <div
-              className={classes.device}
-              key={device.title}
-            >
+            <div className={classes.device} key={device.title}>
               <span className={classes.deviceIcon}>{device.icon}</span>
               <Typography variant="body1">{device.title}</Typography>
-              <Typography
-                style={{ color: device.color }}
-                variant="h2"
-              >
+              <Typography style={{ color: device.color }} variant="h2">
                 {device.value}%
               </Typography>
             </div>
