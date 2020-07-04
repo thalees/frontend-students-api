@@ -142,8 +142,4 @@ const BookList = ({ className, setData, setUpdateButton }) => {
   );
 };
 
-// Não passar o students id chumbado, deveria ser buscado do LOCALSTORAGE.
-
-// Lógica de validação: Digita o usuário, se tiver pega o ID, caso contrário cria.
-
 export default BookList;

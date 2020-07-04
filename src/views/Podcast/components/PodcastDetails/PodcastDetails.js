@@ -1,6 +1,5 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import clsx from 'clsx';
-import PropTypes from 'prop-types';
 import {
   Card,
   CardHeader,
@@ -12,26 +11,33 @@ import {
   TextField
 } from '@material-ui/core';
 
-const PodcastDetails = props => {
-  const { className, ...rest } = props;
+import PodcastService from '../../../../services/PodcastService';
 
-  const [values, setValues] = useState({
+const PodcastDetails = ({ className, podcastToBeUpdated, updateButton }) => {
+  const [podcastValues, setPodcastValues] = useState({
+    id: '',
     subject: '',
     time: '',
     link: ''
   });
 
+  const service = new PodcastService();
+
+  useEffect(() => {
+    setPodcastValues(podcastToBeUpdated);
+  }, [podcastToBeUpdated]);
+
   const handleChange = event => {
-    setValues({
-      ...values,
+    setPodcastValues({
+      ...podcastValues,
       [event.target.name]: event.target.value
     });
   };
 
   return (
-    <Card {...rest} className={clsx({}, className)}>
+    <Card className={clsx({}, className)}>
       <form autoComplete="off" noValidate>
-        <CardHeader subheader="Fomulário para adição e edição de Podcast" title="Podcast" />
+        <CardHeader subheader="The information can be edited" title="Podcast" />
         <Divider />
         <CardContent>
           <Grid container spacing={3}>
@@ -44,33 +50,31 @@ const PodcastDetails = props => {
                 name="subject"
                 onChange={handleChange}
                 required
-                value={values.subject}
+                value={podcastValues.subject}
                 variant="outlined"
               />
             </Grid>
             <Grid item md={6} xs={12}>
               <TextField
                 fullWidth
-                helperText="Please specify the Time"
                 label="Time"
                 margin="dense"
                 name="time"
                 onChange={handleChange}
                 required
-                value={values.title}
+                value={podcastValues.time}
                 variant="outlined"
               />
             </Grid>
             <Grid item md={6} xs={12}>
               <TextField
                 fullWidth
-                helperText="Please specify the link"
                 label="Link"
                 margin="dense"
                 name="link"
                 required
                 onChange={handleChange}
-                value={values.link}
+                value={podcastValues.link}
                 variant="outlined"
               />
             </Grid>
@@ -78,17 +82,25 @@ const PodcastDetails = props => {
         </CardContent>
         <Divider />
         <CardActions>
-          <Button color="primary" variant="contained">
-            Save Podcast
+          <Button
+            color="primary"
+            variant="contained"
+            disabled={updateButton}
+            onClick={() => service.post(podcastValues)}>
+            Save podcast
+          </Button>
+
+          <Button
+            color="primary"
+            variant="contained"
+            disabled={!updateButton}
+            onClick={() => service.put(podcastValues)}>
+            Update podcast
           </Button>
         </CardActions>
       </form>
     </Card>
   );
-};
-
-PodcastDetails.propTypes = {
-  className: PropTypes.string
 };
 
 export default PodcastDetails;

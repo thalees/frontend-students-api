@@ -1,9 +1,10 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import clsx from 'clsx';
 import PerfectScrollbar from 'react-perfect-scrollbar';
-import PropTypes from 'prop-types';
 import { makeStyles, withStyles } from '@material-ui/styles';
 import { red } from '@material-ui/core/colors';
+
+import PodcastService from '../../../../services/PodcastService';
 
 import {
   Card,
@@ -49,15 +50,30 @@ const ColorButton = withStyles(theme => ({
   }
 }))(Button);
 
-const PodcastList = props => {
-  const [podcasts, setPodcasts] = useState([{}]);
+const PodcastList = ({ className, setData, setUpdateButton }) => {
+  const [podcasts, setPodcasts] = useState([]);
 
-  const { className, ...rest } = props;
+  const service = new PodcastService();
+
+  const getPodcastList = async () => {
+    const response = await service.get();
+    setPodcasts(response.data);
+  };
+
+  const deleteItem = item => {
+    const items = podcasts;
+    items.splice(item, 1);
+    setPodcasts(items);
+  };
+
+  useEffect(() => {
+    getPodcastList();
+  }, []);
 
   const classes = useStyles();
 
   return (
-    <Card {...rest} className={clsx(classes.root, className)}>
+    <Card className={clsx(classes.root, className)}>
       <CardHeader title="Podcast List" />
       <Divider />
       <CardContent className={classes.content}>
@@ -75,17 +91,38 @@ const PodcastList = props => {
               </TableHead>
               <TableBody>
                 {podcasts.map((podcast, index) => (
-                  <TableRow hover key={podcasts.id}>
+                  <TableRow
+                    hover
+                    key={podcast.id}
+                    id={podcast.id}
+                    onClick={event => {
+                      const cell = event.currentTarget.childNodes;
+                      setData({
+                        id: event.currentTarget.getAttribute('id'),
+                        subject: cell[1].textContent,
+                        time: cell[2].textContent,
+                        link: cell[3].textContent
+                      });
+                      setUpdateButton(true);
+                    }}>
                     <TableCell>{index}</TableCell>
-                    <TableCell>{podcasts.subject}</TableCell>
-                    <TableCell>{podcasts.time}</TableCell>
-                    <TableCell>{podcasts.link}</TableCell>
+                    <TableCell>{podcast.subject}</TableCell>
+                    <TableCell>{podcast.time}</TableCell>
+                    <TableCell>{podcast.link}</TableCell>
                     <TableCell>
                       <div>
                         <ColorButton
                           variant="contained"
+                          id={podcast.id}
                           startIcon={<DeleteIcon />}
-                        >
+                          onClick={event => {
+                            service.delete(
+                              event.currentTarget.getAttribute('id')
+                            );
+                            deleteItem(
+                              event.currentTarget.childNodes[0].textContent
+                            );
+                          }}>
                           Delete
                         </ColorButton>
                       </div>
@@ -100,10 +137,6 @@ const PodcastList = props => {
       <Divider />
     </Card>
   );
-};
-
-PodcastList.propTypes = {
-  className: PropTypes.string
 };
 
 export default PodcastList;

@@ -36,7 +36,7 @@ const BookDetails = ({ className, bookToBeUpdated, updateButton }) => {
   return (
     <Card className={clsx({}, className)}>
       <form autoComplete="off" noValidate>
-        <CardHeader subheader="The information can be edited" title="Profile" />
+        <CardHeader subheader="The information can be edited" title="Book" />
         <Divider />
         <CardContent>
           <Grid container spacing={3}>
