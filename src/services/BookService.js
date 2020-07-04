@@ -1,15 +1,21 @@
 import axios from 'axios';
 
 export default class BookService {
-  get = student_id => {
-    axios
-      .get('/students/' + student_id + '/books')
-      .then(response => {
-        alert(response.data.json());
-        return response.data.json();
-      })
-      .catch(error => {
-        return error.message;
-      });
+  student_id = localStorage.getItem('studentId');
+
+  get = async () => {
+    return await axios.get('/students/' + this.student_id + '/books');
+  };
+
+  post = async data => {
+    return await axios.post('/students/' + this.student_id + '/books', data);
+  };
+
+  put = async data => {
+    return await axios.put('/students/books/' + data.id, data);
+  };
+
+  delete = async id => {
+    return await axios.delete('/students/books/' + id);
   };
 }
