@@ -8,6 +8,8 @@ import {
   Dashboard as DashboardView,
   Student as StudentView,
   Book as BookView,
+  Article as ArticleView,
+  Course as CourseView,
   Podcast as PodcastView,
   NotFound as NotFoundView
 } from './views';
@@ -39,6 +41,18 @@ const Routes = () => {
         exact
         layout={MainLayout}
         path="/books"
+      />
+      <RouteWithLayout
+        component={ArticleView}
+        exact
+        layout={MainLayout}
+        path="/articles"
+      />
+      <RouteWithLayout
+        component={CourseView}
+        exact
+        layout={MainLayout}
+        path="/courses"
       />
       <RouteWithLayout
         component={PodcastView}
