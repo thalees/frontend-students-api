@@ -1,6 +1,5 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import clsx from 'clsx';
-import PropTypes from 'prop-types';
 import {
   Card,
   CardHeader,
@@ -11,39 +10,45 @@ import {
   Button,
   TextField
 } from '@material-ui/core';
+import CourseService from '../../../../services/CourseService';
 
-const CourseDetails = props => {
-  const { className, ...rest } = props;
-
-  const [values, setValues] = useState({
-    subject: '',
-    link: ''
+const CourseDetails = ({ className, courseToBeUpdated, updateButton }) => {
+  const [courseValues, setCourseValues] = useState({
+    id: '',
+    name: '',
+    platform: '',
+    price:''
   });
+  const service = new CourseService();
+
+  useEffect(() => {
+    setCourseValues(courseToBeUpdated);
+  }, [courseToBeUpdated]);
 
   const handleChange = event => {
-    setValues({
-      ...values,
+    setCourseValues({
+      ...courseValues,
       [event.target.name]: event.target.value
     });
   };
 
   return (
-    <Card {...rest} className={clsx({}, className)}>
+    <Card className={clsx({}, className)}>
       <form autoComplete="off" noValidate>
-        <CardHeader subheader="The information can be edited" title="Profile" />
+        <CardHeader subheader="The information can be edited" title="Course" />
         <Divider />
         <CardContent>
           <Grid container spacing={3}>
             <Grid item md={6} xs={12}>
               <TextField
                 fullWidth
-                helperText="Please specify the subject"
+                helperText="Please specify the name"
                 label="Name"
                 margin="dense"
                 name="name"
                 onChange={handleChange}
                 required
-                value={values.subject}
+                value={courseValues.name}
                 variant="outlined"
               />
             </Grid>
@@ -55,7 +60,7 @@ const CourseDetails = props => {
                 name="platform"
                 required
                 onChange={handleChange}
-                value={values.link}
+                value={courseValues.platform}
                 variant="outlined"
               />
             </Grid>
@@ -67,7 +72,7 @@ const CourseDetails = props => {
                 name="price"
                 required
                 onChange={handleChange}
-                value={values.link}
+                value={courseValues.price}
                 variant="outlined"
               />
             </Grid>
@@ -75,17 +80,25 @@ const CourseDetails = props => {
         </CardContent>
         <Divider />
         <CardActions>
-          <Button color="primary" variant="contained">
-            Save Course
+          <Button
+            color="primary"
+            variant="contained"
+            disabled={updateButton}
+            onClick={() => service.post(courseValues)}>
+            Save course
+          </Button>
+
+          <Button
+            color="primary"
+            variant="contained"
+            disabled={!updateButton}
+            onClick={() => service.put(courseValues)}>
+            Update course
           </Button>
         </CardActions>
       </form>
     </Card>
   );
-};
-
-CourseDetails.propTypes = {
-  className: PropTypes.string
 };
 
 export default CourseDetails;

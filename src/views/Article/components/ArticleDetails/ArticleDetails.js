@@ -1,6 +1,5 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import clsx from 'clsx';
-import PropTypes from 'prop-types';
 import {
   Card,
   CardHeader,
@@ -11,26 +10,31 @@ import {
   Button,
   TextField
 } from '@material-ui/core';
+import ArticleService from '../../../../services/ArticleService';
 
-const ArticleDetails = props => {
-  const { className, ...rest } = props;
-
-  const [values, setValues] = useState({
+const ArticleDetails = ({ className, articleToBeUpdated, updateButton }) => {
+  const [articleValues, setArticleValues] = useState({
+    id: '',
     subject: '',
     link: ''
   });
+  const service = new ArticleService();
+
+  useEffect(() => {
+    setArticleValues(articleToBeUpdated);
+  }, [articleToBeUpdated]);
 
   const handleChange = event => {
-    setValues({
-      ...values,
+    setArticleValues({
+      ...articleValues,
       [event.target.name]: event.target.value
     });
   };
 
   return (
-    <Card {...rest} className={clsx({}, className)}>
+    <Card className={clsx({}, className)}>
       <form autoComplete="off" noValidate>
-        <CardHeader subheader="The information can be edited" title="Profile" />
+        <CardHeader subheader="The information can be edited" title="Article" />
         <Divider />
         <CardContent>
           <Grid container spacing={3}>
@@ -43,7 +47,7 @@ const ArticleDetails = props => {
                 name="subject"
                 onChange={handleChange}
                 required
-                value={values.subject}
+                value={articleValues.subject}
                 variant="outlined"
               />
             </Grid>
@@ -55,7 +59,7 @@ const ArticleDetails = props => {
                 name="link"
                 required
                 onChange={handleChange}
-                value={values.link}
+                value={articleValues.link}
                 variant="outlined"
               />
             </Grid>
@@ -63,17 +67,25 @@ const ArticleDetails = props => {
         </CardContent>
         <Divider />
         <CardActions>
-          <Button color="primary" variant="contained">
-            Save Article
+          <Button
+            color="primary"
+            variant="contained"
+            disabled={updateButton}
+            onClick={() => service.post(articleValues)}>
+            Save article
+          </Button>
+
+          <Button
+            color="primary"
+            variant="contained"
+            disabled={!updateButton}
+            onClick={() => service.put(articleValues)}>
+            Update article
           </Button>
         </CardActions>
       </form>
     </Card>
   );
-};
-
-ArticleDetails.propTypes = {
-  className: PropTypes.string
 };
 
 export default ArticleDetails;

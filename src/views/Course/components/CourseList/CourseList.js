@@ -1,7 +1,6 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import clsx from 'clsx';
 import PerfectScrollbar from 'react-perfect-scrollbar';
-import PropTypes from 'prop-types';
 import { makeStyles, withStyles } from '@material-ui/styles';
 import { red } from '@material-ui/core/colors';
 
@@ -51,24 +50,30 @@ const ColorButton = withStyles(theme => ({
   }
 }))(Button);
 
-const CourseList = props => {
-  const [courses, setCourses] = useState([{}]);
+const CourseList = ({ className, setData, setUpdateButton }) => {
+  const [course, setCourse] = useState([]);
 
-  // useEffect(() => {
-  //   function handleStatusChange(data) {
-  //     setBooks(data);
-  //   }
+  const service = new CourseService();
 
-  //   const service = new BookService();
-  //   service.get('f58160c6-4e88-460d-8448-bfba8aa6f4b0', handleStatusChange);
-  // }, [setBooks]);
+  const getCourseList = async () => {
+    const response = await service.get();
+    setCourse(response.data);
+  };
 
-  const { className, ...rest } = props;
+  const deleteItem = item => {
+    const items = course;
+    items.splice(item, 1);
+    setCourse(items);
+  };
+
+  useEffect(() => {
+    getCourseList();
+  }, []);
 
   const classes = useStyles();
 
   return (
-    <Card {...rest} className={clsx(classes.root, className)}>
+    <Card className={clsx(classes.root, className)}>
       <CardHeader title="Course List" />
       <Divider />
       <CardContent className={classes.content}>
@@ -84,23 +89,37 @@ const CourseList = props => {
                 </TableRow>
               </TableHead>
               <TableBody>
-                {courses.map((course, index) => (
-                  <TableRow hover key={course.id}>
+                {course.map((course, index) => (
+                  <TableRow
+                    hover
+                    key={course.id}
+                    id={course.id}
+                    onClick={event => {
+                      const cell = event.currentTarget.childNodes;
+                      setData({
+                        id: event.currentTarget.getAttribute('id'),
+                        name: cell[1].textContent,
+                        platform: cell[2].textContent,
+                        price: cell[3].textContent
+                      });
+                      setUpdateButton(true);
+                    }}>
                     <TableCell>{index}</TableCell>
-                    <TableCell>{course.subject}</TableCell>
+                    <TableCell>{course.name}</TableCell>
                     <TableCell>{course.platform}</TableCell>
                     <TableCell>{course.price}</TableCell>
                     <TableCell>
                       <div>
                         <ColorButton
                           variant="contained"
+                          id={course.id}
                           startIcon={<DeleteIcon />}
                           onClick={event => {
-                            const service = new CourseService();
-                            setCourses(
-                              service.get(
-                                'f58160c6-4e88-460d-8448-bfba8aa6f4b0'
-                              )
+                            service.delete(
+                              event.currentTarget.getAttribute('id')
+                            );
+                            deleteItem(
+                              event.currentTarget.childNodes[0].textContent
                             );
                           }}>
                           Delete
@@ -117,10 +136,6 @@ const CourseList = props => {
       <Divider />
     </Card>
   );
-};
-
-CourseList.propTypes = {
-  className: PropTypes.string
 };
 
 export default CourseList;

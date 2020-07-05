@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { withRouter } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import { Grid } from '@material-ui/core';
@@ -13,15 +13,22 @@ const useStyles = makeStyles(theme => ({
 
 const Course = props => {
   const classes = useStyles();
+  const [data, setData] = useState({
+    id: '',
+    name: '',
+    platform: '',
+    price: ''
+  });
+  const [updateButton, setUpdateButton] = useState(false);
 
   return (
     <div className={classes.root}>
       <Grid container spacing={4}>
         <Grid item lg={12} md={6} xl={8} xs={12}>
-          <CourseDetails />
+          <CourseDetails courseToBeUpdated={data} updateButton={updateButton} />
         </Grid>
         <Grid item lg={12} md={6} xl={8} xs={12}>
-          <CourseList />
+          <CourseList setData={setData} setUpdateButton={setUpdateButton}/>
         </Grid>
       </Grid>
     </div>
