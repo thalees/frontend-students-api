@@ -128,6 +128,11 @@ const Student = props => {
     setStudentList(response.data);
   };
 
+  const postStudentList = async username => {
+    const response = await service.post(username);
+    return response.data;
+  };
+
   useEffect(() => {
     getStudentList();
   }, []);
@@ -241,9 +246,10 @@ const Student = props => {
                         history.push('/dashboard');
                         return;
                       }
-                      else {
-                        
-                      }
+                      student = postStudentList(studentUsername);
+                      localStorage.setItem('studentId', student.id);
+                      localStorage.setItem('studentUsername', studentUsername);
+                      history.push('/dashboard');
                     });
                   }}>
                   Sign in now
