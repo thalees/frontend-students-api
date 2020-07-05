@@ -7,6 +7,8 @@ import DashboardIcon from '@material-ui/icons/Dashboard';
 import BookIcon from '@material-ui/icons/Book';
 import ArticleIcon from '@material-ui/icons/ChromeReaderMode';
 import CourseIcon from '@material-ui/icons/School';
+import PodcastIcon from '@material-ui/icons/Headset';
+
 import { Profile, SidebarNav } from './components';
 
 const useStyles = makeStyles(theme => ({
@@ -57,6 +59,11 @@ const Sidebar = props => {
       title: 'Courses',
       href: '/courses',
       icon: <CourseIcon />
+    },
+    {
+      title: 'Podcast',
+      href: '/Podcasts',
+      icon: <PodcastIcon />
     }
   ];
 

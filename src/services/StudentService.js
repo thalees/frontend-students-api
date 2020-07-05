@@ -6,7 +6,7 @@ export default class StudentService {
     return response;
   };
 
-  post = data => {
-    return axios.post('/students', { username: 'vaibrasil' });
+  post = username => {
+    return axios.post('/students', { username: username });
   };
 }
