@@ -4,7 +4,7 @@ import PerfectScrollbar from 'react-perfect-scrollbar';
 import { makeStyles, withStyles } from '@material-ui/styles';
 import { red } from '@material-ui/core/colors';
 
-import BookService from '../../../../services/BookService';
+import PodcastService from '../../../../services/PodcastService';
 
 import {
   Card,
@@ -50,31 +50,31 @@ const ColorButton = withStyles(theme => ({
   }
 }))(Button);
 
-const BookList = ({ className, setData, setUpdateButton }) => {
-  const [books, setBooks] = useState([]);
+const PodcastList = ({ className, setData, setUpdateButton }) => {
+  const [podcasts, setPodcasts] = useState([]);
 
-  const service = new BookService();
+  const service = new PodcastService();
 
-  const getBookList = async () => {
+  const getPodcastList = async () => {
     const response = await service.get();
-    setBooks(response.data);
+    setPodcasts(response.data);
   };
 
   const deleteItem = item => {
-    const items = books;
+    const items = podcasts;
     items.splice(item, 1);
-    setBooks(items);
+    setPodcasts(items);
   };
 
   useEffect(() => {
-    getBookList();
+    getPodcastList();
   }, []);
 
   const classes = useStyles();
 
   return (
     <Card className={clsx(classes.root, className)}>
-      <CardHeader title="Book List" />
+      <CardHeader title="Podcast List" />
       <Divider />
       <CardContent className={classes.content}>
         <PerfectScrollbar>
@@ -82,41 +82,38 @@ const BookList = ({ className, setData, setUpdateButton }) => {
             <Table>
               <TableHead>
                 <TableRow>
-                  <TableCell>Book Ref</TableCell>
-                  <TableCell>Title</TableCell>
+                  <TableCell>Podcast Ref</TableCell>
                   <TableCell>Subject</TableCell>
-                  <TableCell>Author</TableCell>
+                  <TableCell>Time</TableCell>
                   <TableCell>Link</TableCell>
                   <TableCell>Actions</TableCell>
                 </TableRow>
               </TableHead>
               <TableBody>
-                {books.map((book, index) => (
+                {podcasts.map((podcast, index) => (
                   <TableRow
                     hover
-                    key={book.id}
-                    id={book.id}
+                    key={podcast.id}
+                    id={podcast.id}
                     onClick={event => {
                       const cell = event.currentTarget.childNodes;
                       setData({
                         id: event.currentTarget.getAttribute('id'),
-                        title: cell[1].textContent,
-                        subject: cell[2].textContent,
-                        author: cell[3].textContent,
-                        link: cell[4].textContent
+                        subject: cell[1].textContent,
+                        time: cell[2].textContent,
+                        link: cell[3].textContent
                       });
                       setUpdateButton(true);
                     }}>
                     <TableCell>{index}</TableCell>
-                    <TableCell>{book.title}</TableCell>
-                    <TableCell>{book.subject}</TableCell>
-                    <TableCell>{book.author}</TableCell>
-                    <TableCell>{book.link}</TableCell>
+                    <TableCell>{podcast.subject}</TableCell>
+                    <TableCell>{podcast.time}</TableCell>
+                    <TableCell>{podcast.link}</TableCell>
                     <TableCell>
                       <div>
                         <ColorButton
                           variant="contained"
-                          id={book.id}
+                          id={podcast.id}
                           startIcon={<DeleteIcon />}
                           onClick={event => {
                             service.delete(
@@ -142,4 +139,4 @@ const BookList = ({ className, setData, setUpdateButton }) => {
   );
 };
 
-export default BookList;
+export default PodcastList;

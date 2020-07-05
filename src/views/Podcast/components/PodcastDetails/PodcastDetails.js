@@ -10,25 +10,26 @@ import {
   Button,
   TextField
 } from '@material-ui/core';
-import BookService from '../../../../services/BookService';
 
-const BookDetails = ({ className, bookToBeUpdated, updateButton }) => {
-  const [bookValues, setBookValues] = useState({
+import PodcastService from '../../../../services/PodcastService';
+
+const PodcastDetails = ({ className, podcastToBeUpdated, updateButton }) => {
+  const [podcastValues, setPodcastValues] = useState({
     id: '',
     subject: '',
-    title: '',
-    author: '',
+    time: '',
     link: ''
   });
-  const service = new BookService();
+
+  const service = new PodcastService();
 
   useEffect(() => {
-    setBookValues(bookToBeUpdated);
-  }, [bookToBeUpdated]);
+    setPodcastValues(podcastToBeUpdated);
+  }, [podcastToBeUpdated]);
 
   const handleChange = event => {
-    setBookValues({
-      ...bookValues,
+    setPodcastValues({
+      ...podcastValues,
       [event.target.name]: event.target.value
     });
   };
@@ -36,7 +37,7 @@ const BookDetails = ({ className, bookToBeUpdated, updateButton }) => {
   return (
     <Card className={clsx({}, className)}>
       <form autoComplete="off" noValidate>
-        <CardHeader subheader="The information can be edited" title="Book" />
+        <CardHeader subheader="The information can be edited" title="Podcast" />
         <Divider />
         <CardContent>
           <Grid container spacing={3}>
@@ -49,31 +50,19 @@ const BookDetails = ({ className, bookToBeUpdated, updateButton }) => {
                 name="subject"
                 onChange={handleChange}
                 required
-                value={bookValues.subject}
+                value={podcastValues.subject}
                 variant="outlined"
               />
             </Grid>
             <Grid item md={6} xs={12}>
               <TextField
                 fullWidth
-                label="Title"
+                label="Time"
                 margin="dense"
-                name="title"
+                name="time"
                 onChange={handleChange}
                 required
-                value={bookValues.title}
-                variant="outlined"
-              />
-            </Grid>
-            <Grid item md={6} xs={12}>
-              <TextField
-                fullWidth
-                label="Author"
-                margin="dense"
-                name="author"
-                onChange={handleChange}
-                required
-                value={bookValues.author}
+                value={podcastValues.time}
                 variant="outlined"
               />
             </Grid>
@@ -85,7 +74,7 @@ const BookDetails = ({ className, bookToBeUpdated, updateButton }) => {
                 name="link"
                 required
                 onChange={handleChange}
-                value={bookValues.link}
+                value={podcastValues.link}
                 variant="outlined"
               />
             </Grid>
@@ -97,16 +86,16 @@ const BookDetails = ({ className, bookToBeUpdated, updateButton }) => {
             color="primary"
             variant="contained"
             disabled={updateButton}
-            onClick={() => service.post(bookValues)}>
-            Save book
+            onClick={() => service.post(podcastValues)}>
+            Save podcast
           </Button>
 
           <Button
             color="primary"
             variant="contained"
             disabled={!updateButton}
-            onClick={() => service.put(bookValues)}>
-            Update book
+            onClick={() => service.put(podcastValues)}>
+            Update podcast
           </Button>
         </CardActions>
       </form>
@@ -114,4 +103,4 @@ const BookDetails = ({ className, bookToBeUpdated, updateButton }) => {
   );
 };
 
-export default BookDetails;
+export default PodcastDetails;

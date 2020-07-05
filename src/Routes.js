@@ -8,6 +8,7 @@ import {
   Dashboard as DashboardView,
   Student as StudentView,
   Book as BookView,
+  Podcast as PodcastView,
   NotFound as NotFoundView
 } from './views';
 
@@ -38,6 +39,12 @@ const Routes = () => {
         exact
         layout={MainLayout}
         path="/books"
+      />
+      <RouteWithLayout
+        component={PodcastView}
+        exact
+        layout={MainLayout}
+        path="/Podcasts"
       />
       <Redirect to="/not-found" />
     </Switch>

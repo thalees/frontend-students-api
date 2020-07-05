@@ -5,6 +5,7 @@ import { makeStyles } from '@material-ui/styles';
 import { Divider, Drawer } from '@material-ui/core';
 import DashboardIcon from '@material-ui/icons/Dashboard';
 import BookIcon from '@material-ui/icons/Book';
+import PodcastIcon from '@material-ui/icons/Headset';
 
 import { Profile, SidebarNav } from './components';
 
@@ -46,6 +47,11 @@ const Sidebar = props => {
       title: 'Books',
       href: '/books',
       icon: <BookIcon />
+    },
+    {
+      title: 'Podcast',
+      href: '/Podcasts',
+      icon: <PodcastIcon />
     }
   ];
 
